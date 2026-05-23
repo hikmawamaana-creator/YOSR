@@ -1,6 +1,9 @@
 /* ── STATE ─────────────────────────────────────── */
 let currentLang = localStorage.getItem('yosr_lang') || 'ar';
 
+const UPDATE_DATE_AR = 'آخر تحديث: 22/05/2026';
+const UPDATE_DATE_FR = 'Dernière mise à jour : 22/05/2026';
+
 /* ── INIT ──────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   buildVilleFilter();
@@ -24,30 +27,44 @@ function applyLang(lang) {
 
   document.getElementById('langLabel').textContent = lang === 'ar' ? 'FR' : 'ع';
 
-  // Translate all data-ar / data-fr elements
   document.querySelectorAll('[data-ar]').forEach(el => {
     if (el.tagName !== 'INPUT' && el.tagName !== 'OPTION') {
       el.textContent = lang === 'ar' ? el.dataset.ar : el.dataset.fr;
     }
   });
 
-  // Placeholders
   document.querySelectorAll('[data-ar-ph]').forEach(el => {
     el.placeholder = lang === 'ar' ? el.dataset.arPh : el.dataset.frPh;
   });
 
-  // Ville select options
   document.querySelectorAll('#villeFilter option').forEach(opt => {
     if (opt.dataset.ar) opt.textContent = lang === 'ar' ? opt.dataset.ar : opt.dataset.fr;
   });
 
-  // Filter label
   const filterLabel = document.querySelector('.filter-label');
   if (filterLabel) {
     filterLabel.textContent = lang === 'ar' ? 'المدينة:' : 'Ville :';
   }
 
-  // Results text update
+  // Update contribute section labels
+  const contribTitle = document.getElementById('contrib-title');
+  const contribText  = document.getElementById('contrib-text');
+  const btnModif     = document.getElementById('btn-modif');
+  const btnAjout     = document.getElementById('btn-ajout');
+  const contribMail  = document.getElementById('contrib-mail');
+  if (contribTitle) contribTitle.textContent = lang === 'ar'
+    ? 'معلومة غير صحيحة؟' : 'Une information incorrecte ?';
+  if (contribText) contribText.textContent = lang === 'ar'
+    ? 'ساعدنا في الحفاظ على دليل موثوق لفائدة المرضى.'
+    : 'Aidez-nous à maintenir un annuaire fiable pour les patients.';
+  if (btnModif) btnModif.innerHTML = lang === 'ar'
+    ? '📩&nbsp; الإبلاغ عن خطأ' : '📩&nbsp; Signaler une modification';
+  if (btnAjout) btnAjout.innerHTML = lang === 'ar'
+    ? '➕&nbsp; اقتراح جمعية جديدة' : '➕&nbsp; Ajouter une association';
+  if (contribMail) contribMail.textContent = lang === 'ar'
+    ? 'أو تواصل معنا عبر البريد الإلكتروني : hikmawamaana@gmail.com'
+    : 'Ou contactez-nous par email : hikmawamaana@gmail.com';
+
   filterAssocs();
 }
 
@@ -129,32 +146,28 @@ function buildCard(a) {
   const ville = lang === 'ar' ? a.ville_ar : a.ville_fr;
   const aide  = lang === 'ar' ? a.aide_ar  : a.aide_fr;
   const addr  = lang === 'ar' ? a.adresse_ar : a.adresse_fr;
+  const dateLabel = lang === 'ar' ? UPDATE_DATE_AR : UPDATE_DATE_FR;
 
-  const fiabMap = {
-    verif:   { ar: '✅ موثق رسمياً',       fr: '✅ Vérifié officiellement', cls: 'fiab-verif' },
-    assoc:   { ar: '🟡 موثق جمعوياً',     fr: '🟡 Vérifié associativement', cls: 'fiab-assoc' },
-    encours: { ar: '⚠️ قيد التحقق',       fr: '⚠️ En cours de vérification', cls: 'fiab-encours' }
-  };
-  const fiab = fiabMap[a.fiabilite] || fiabMap.encours;
-
-  // Tel block — only if tel is not null
+  /* ── Tel block ── always LTR, all numbers clickable, full-width call button */
   let telHTML = '';
   if (a.tel) {
-    // Clean up extra spaces in multi-number strings
-    const telDisplay = a.tel.replace(/\s+\/\s+/g, ' / ').replace(/\s{2,}/g, ' ').trim();
-    // Make first number clickable (click-to-call on mobile)
-    const firstNum = telDisplay.split('/')[0].trim().replace(/\s/g, '');
-    const telLabel = lang === 'ar' ? 'الهاتف' : 'Tél';
+    const numbers = a.tel.split('/').map(n => n.trim().replace(/\s{2,}/g, ' ')).filter(Boolean);
+    // Primary number → big green call button
+    const primaryHref = numbers[0].replace(/\s/g, '');
+    const callLabel   = lang === 'ar' ? '📞 اتصل الآن' : '📞 Appeler';
+    // Extra numbers (if any) as smaller links below
+    const extraHTML = numbers.slice(1).map(n => {
+      const href = n.replace(/\s/g, '');
+      return `<a href="tel:${href}" class="tel-extra" dir="ltr">${n}</a>`;
+    }).join('');
+
     telHTML = `
-      <div class="contact-item">
-        <span class="contact-icon">📞</span>
-        <span class="contact-text">
-          <strong>${telLabel}:</strong> <a href="tel:${firstNum}">${telDisplay}</a>
-        </span>
-      </div>`;
+      <a href="tel:${primaryHref}" class="call-btn" dir="ltr" aria-label="${callLabel}">
+        ${callLabel} &nbsp;<span dir="ltr">${numbers[0]}</span>
+      </a>
+      ${extraHTML}`;
   }
 
-  const addrLabel = lang === 'ar' ? 'العنوان' : 'Adresse';
   const aideLabel = lang === 'ar' ? 'المساعدات المقدمة' : 'Services proposés';
 
   card.innerHTML = `
@@ -163,16 +176,14 @@ function buildCard(a) {
       <div class="card-ville-tag">${escHtml(ville)}</div>
     </div>
     <div class="card-body">
-      <div>
-        <div class="card-aide" aria-label="${aideLabel}">${escHtml(aide)}</div>
-      </div>
+      <div class="card-aide" aria-label="${aideLabel}">${escHtml(aide)}</div>
       <div class="card-contact">
         ${telHTML}
         <div class="contact-item">
           <span class="contact-icon">📍</span>
           <span class="contact-text">${escHtml(addr)}</span>
         </div>
-        <span class="fiab-badge ${fiab.cls}">${lang === 'ar' ? fiab.ar : fiab.fr}</span>
+        <div class="update-date">🗓 ${escHtml(dateLabel)}</div>
       </div>
     </div>`;
 
