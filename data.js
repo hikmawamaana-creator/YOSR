@@ -144,7 +144,7 @@ const ASSOCIATIONS = [
   },
   {
     id: 12,
-    nom_ar: "دار بابانا في مواجهة السرطان",
+    nom_ar: "دار بابانا لمواجهة السرطان",
     nom_fr: "Dar Babana Face au Cancer",
     ville_ar: "مراكش",
     ville_fr: "Marrakech",
