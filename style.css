@@ -435,11 +435,15 @@ html[dir="ltr"] .ville-select { background-position: right 14px center; padding-
 }
 
 /* ══ BADGES ════════════════════════════════════════ */
+.card-aide-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 .card-badges {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding: 10px 18px 0;
 }
 .badge {
   display: inline-flex;

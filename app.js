@@ -213,9 +213,11 @@ function buildCard(a) {
       <div class="card-name">${escHtml(nom)}</div>
       <div class="card-ville-tag">${escHtml(ville)}</div>
     </div>
-    <div class="card-badges">${badgesHTML}</div>
     <div class="card-body">
-      <div class="card-aide">${escHtml(aide)}</div>
+      <div class="card-aide-section">
+        <div class="card-badges">${badgesHTML}</div>
+        <div class="card-aide">${escHtml(aide)}...</div>
+      </div>
       <div class="card-contact">
         ${telHTML}
         <div class="contact-item">
