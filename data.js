@@ -176,7 +176,7 @@ const ASSOCIATIONS = [
     ville_fr: "Rabat",
     aide_ar: "دعم الأطفال المصابين بالسرطان وأسرهم، إيواء، تغذية، نقل، دعم نفسي، مساعدة على الأدوية والتحاليل والسكانير",
     aide_fr: "Soutien enfants atteints du cancer et leurs familles, hébergement, restauration, transport, soutien psychologique, aide médicaments, analyses, scanners",
-    adresse_ar: "حي النهضة 2، طريق وادي أكراش، الرباط",
+    adresse_ar: "حي النهضة 2، طريق وادي عكراش، الرباط",
     adresse_fr: "Hay Nahda Groupe II, Route Oued Akrach, Rabat",
     tel: "05 37 75 41 74",
     fiabilite: "verif"
