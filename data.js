@@ -183,7 +183,7 @@ const ASSOCIATIONS = [
   },
   {
     id: 16,
-    nom_ar: "جمعية دار الزهر",
+    nom_ar: "جمعية دار زهور",
     nom_fr: "Association Dar Zhor",
     ville_ar: "الدار البيضاء",
     ville_fr: "Casablanca",
