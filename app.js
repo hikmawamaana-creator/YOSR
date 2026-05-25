@@ -1,9 +1,9 @@
 /* ── STATE ─────────────────────────────────────── */
 let currentLang = localStorage.getItem('yosr_lang') || 'ar';
+let currentPage = 'home';
 
 const UPDATE_DATE_AR = 'آخر تحديث: 22/05/2026';
 const UPDATE_DATE_FR = 'Dernière mise à jour : 22/05/2026';
-
 
 /* ── INIT ──────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -13,12 +13,26 @@ document.addEventListener('DOMContentLoaded', () => {
   updateResults(ASSOCIATIONS.length);
 });
 
+/* ── PAGE NAVIGATION ───────────────────────────── */
+function showPage(page, event) {
+  if (event) event.preventDefault();
+  currentPage = page;
+
+  document.getElementById('page-home').style.display    = page === 'home'    ? '' : 'none';
+  document.getElementById('page-contact').style.display = page === 'contact' ? '' : 'none';
+
+  document.getElementById('nav-home').classList.toggle('nav-link--active',    page === 'home');
+  document.getElementById('nav-contact').classList.toggle('nav-link--active', page === 'contact');
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 /* ── LANGUAGE ──────────────────────────────────── */
 function toggleLang() {
   currentLang = currentLang === 'ar' ? 'fr' : 'ar';
   localStorage.setItem('yosr_lang', currentLang);
   applyLang(currentLang);
-  filterAssocs();
+  if (currentPage === 'home') filterAssocs();
 }
 
 function applyLang(lang) {
@@ -28,40 +42,44 @@ function applyLang(lang) {
 
   document.getElementById('langLabel').textContent = lang === 'ar' ? 'FR' : 'ع';
 
+  // Generic data-ar / data-fr elements
   document.querySelectorAll('[data-ar]').forEach(el => {
     if (el.tagName !== 'INPUT' && el.tagName !== 'OPTION') {
       el.textContent = lang === 'ar' ? el.dataset.ar : el.dataset.fr;
     }
   });
 
+  // Placeholders
   document.querySelectorAll('[data-ar-ph]').forEach(el => {
     el.placeholder = lang === 'ar' ? el.dataset.arPh : el.dataset.frPh;
   });
 
+  // Ville select options
   document.querySelectorAll('#villeFilter option').forEach(opt => {
     if (opt.dataset.ar) opt.textContent = lang === 'ar' ? opt.dataset.ar : opt.dataset.fr;
   });
 
+  // Filter label
   const filterLabel = document.querySelector('.filter-label');
   if (filterLabel) filterLabel.textContent = lang === 'ar' ? 'المدينة:' : 'Ville :';
 
-  // Contact section translations
-  const els = {
-    title:      document.getElementById('contact-title'),
-    desc:       document.getElementById('contact-desc'),
-    modifLabel: document.getElementById('btn-modif-label'),
-    ajoutLabel: document.getElementById('btn-ajout-label'),
-    emailLabel: document.getElementById('contact-email-label'),
+  // Contact page translations
+  const t = {
+    'contact-hero-title':  { ar: 'تواصل معنا',              fr: 'Contactez-nous' },
+    'contact-hero-sub':    { ar: 'نحن هنا للاستماع إليكم ومساعدتكم', fr: 'Nous sommes là pour vous écouter et vous aider' },
+    'contact-title':       { ar: 'هل لاحظتم خطأ في المعلومات؟', fr: 'Vous avez remarqué une erreur ?' },
+    'contact-desc':        {
+      ar: 'إذا لاحظتم خطأ في المعلومات أو ترغبون في إضافة جمعية جديدة، يمكنكم التواصل معنا عبر النموذج التالي.',
+      fr: 'Si vous constatez une erreur ou souhaitez ajouter une association, contactez-nous via le formulaire ci-dessous.'
+    },
+    'btn-report-label':    { ar: 'الإبلاغ عن خطأ',          fr: 'Signaler une erreur' },
+    'btn-add-label':       { ar: 'اقتراح جمعية جديدة',      fr: 'Ajouter une association' },
+    'contact-email-label': { ar: 'أو تواصلوا معنا مباشرة عبر البريد الإلكتروني', fr: 'Ou écrivez-nous directement par email' },
   };
-  if (els.title)      els.title.textContent      = lang === 'ar' ? 'تواصل معنا'              : 'Contactez-nous';
-  if (els.desc)       els.desc.textContent       = lang === 'ar'
-    ? 'إذا لاحظتم خطأ في المعلومات أو ترغبون في إضافة جمعية جديدة، يمكنكم التواصل معنا عبر النموذج التالي.'
-    : 'Si vous constatez une erreur ou souhaitez ajouter une association, contactez-nous via le formulaire.';
-  if (els.modifLabel) els.modifLabel.textContent = lang === 'ar' ? 'الإبلاغ عن خطأ'          : 'Signaler une erreur';
-  if (els.ajoutLabel) els.ajoutLabel.textContent = lang === 'ar' ? 'اقتراح جمعية جديدة'      : 'Ajouter une association';
-  if (els.emailLabel) els.emailLabel.textContent = lang === 'ar' ? 'أو راسلونا مباشرة'       : 'Ou écrivez-nous directement';
-
-  filterAssocs();
+  Object.entries(t).forEach(([id, vals]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = lang === 'ar' ? vals.ar : vals.fr;
+  });
 }
 
 /* ── VILLE FILTER ──────────────────────────────── */
@@ -127,20 +145,19 @@ function buildCard(a) {
   const card  = document.createElement('article');
   card.className = 'card';
 
-  const nom   = lang === 'ar' ? a.nom_ar    : a.nom_fr;
-  const ville = lang === 'ar' ? a.ville_ar  : a.ville_fr;
-  const aide  = lang === 'ar' ? a.aide_ar   : a.aide_fr;
-  const addr  = lang === 'ar' ? a.adresse_ar: a.adresse_fr;
+  const nom       = lang === 'ar' ? a.nom_ar     : a.nom_fr;
+  const ville     = lang === 'ar' ? a.ville_ar   : a.ville_fr;
+  const aide      = lang === 'ar' ? a.aide_ar    : a.aide_fr;
+  const addr      = lang === 'ar' ? a.adresse_ar : a.adresse_fr;
   const dateLabel = lang === 'ar' ? UPDATE_DATE_AR : UPDATE_DATE_FR;
-
 
   /* ── Téléphone ── */
   let telHTML = '';
   if (a.tel) {
-    const numbers   = a.tel.split('/').map(n => n.trim().replace(/\s{2,}/g, ' ')).filter(Boolean);
-    const callLabel = lang === 'ar' ? '📞 اتصل الآن' : '📞 Appeler';
+    const numbers     = a.tel.split('/').map(n => n.trim().replace(/\s{2,}/g, ' ')).filter(Boolean);
+    const callLabel   = lang === 'ar' ? '📞 اتصل الآن' : '📞 Appeler';
     const primaryHref = numbers[0].replace(/\s/g, '');
-    const extraHTML = numbers.slice(1).map(n =>
+    const extraHTML   = numbers.slice(1).map(n =>
       `<a href="tel:${n.replace(/\s/g,'')}" class="tel-extra" dir="ltr">${n}</a>`
     ).join('');
     telHTML = `
