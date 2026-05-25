@@ -434,31 +434,126 @@ html[dir="ltr"] .ville-select { background-position: right 14px center; padding-
   .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 }
 
-/* ══ BADGES ════════════════════════════════════════ */
-.card-aide-section {
+
+
+/* ══ SECTION CONTACT تواصل معنا ══════════════════════════════════ */
+.contact-section {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 12px 40px;
+}
+.contact-inner {
+  background: linear-gradient(135deg, #0D7377 0%, #0a9396 100%);
+  border-radius: 20px;
+  padding: 2px;
+  box-shadow: 0 8px 32px rgba(13, 115, 119, 0.18);
+}
+.contact-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 32px 24px 28px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
 }
-.card-badges {
+.contact-icon-wrap {
+  width: 64px;
+  height: 64px;
+  background: var(--teal-light);
+  border-radius: 50%;
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
 }
-.badge {
-  display: inline-flex;
+.contact-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--teal-dark);
+  line-height: 1.3;
+}
+.contact-desc {
+  font-size: 15px;
+  color: var(--text-sec);
+  line-height: 1.8;
+  max-width: 420px;
+}
+.contact-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 380px;
+  margin-top: 4px;
+}
+.contact-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  text-decoration: none;
+  min-height: 54px;
+  transition: transform .15s, box-shadow .15s, background .2s;
+  cursor: pointer;
+}
+.contact-btn:active { transform: scale(.97); }
+.contact-btn-icon { font-size: 18px; flex-shrink: 0; }
+
+.contact-btn--report {
+  background: var(--teal);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(13,115,119,.25);
+}
+.contact-btn--report:hover {
+  background: var(--teal-dark);
+  box-shadow: 0 6px 18px rgba(13,115,119,.35);
+}
+.contact-btn--add {
+  background: var(--teal-light);
+  color: var(--teal-dark);
+  border: 1.5px solid var(--teal-mid);
+}
+.contact-btn--add:hover {
+  background: #d0ecee;
+}
+.contact-email-row {
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 4px;
-  padding: 5px 11px;
-  border-radius: 20px;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1;
-  white-space: nowrap;
+  padding-top: 4px;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: 380px;
 }
-.badge--heberg   { background: #E8F4FD; color: #1A6B9A; }
-.badge--financier{ background: #FEF9E7; color: #7D6608; }
-.badge--soutien  { background: #F4ECF7; color: #6C3483; }
-.badge--transport{ background: #E8F8F5; color: #1A7A5E; }
-.badge--sensib   { background: #FEF0E6; color: #9A4E1A; }
-/* ══════════════════════════════════════════════════ */
+.contact-email-label {
+  font-size: 13px;
+  color: #999;
+}
+.contact-email-link {
+  font-size: 14px;
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: .2px;
+  direction: ltr;
+  display: inline-block;
+}
+.contact-email-link:hover { text-decoration: underline; }
+
+@media (min-width: 480px) {
+  .contact-actions {
+    flex-direction: row;
+  }
+  .contact-btn { flex: 1; }
+  .contact-email-row { flex-direction: row; justify-content: center; gap: 8px; }
+}
+/* ══════════════════════════════════════════════════════════════════ */

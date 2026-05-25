@@ -4,59 +4,6 @@ let currentLang = localStorage.getItem('yosr_lang') || 'ar';
 const UPDATE_DATE_AR = 'آخر تحديث: 22/05/2026';
 const UPDATE_DATE_FR = 'Dernière mise à jour : 22/05/2026';
 
-/* ── BADGE DETECTION ───────────────────────────── */
-// Détecte automatiquement les badges depuis le texte aide_ar
-const BADGE_RULES = [
-  {
-    key: 'heberg',
-    emoji: '🏠',
-    ar: 'إيواء',
-    fr: 'Hébergement',
-    keywords_ar: ['إيواء'],
-    keywords_fr: ['hébergement', 'logement']
-  },
-  {
-    key: 'financier',
-    emoji: '🏥',
-    ar: 'مساعدة مالية',
-    fr: 'Aide financière',
-    keywords_ar: ['مساعدة مالية', 'مساعدة على الأدوية', 'مساعدات مالية', 'تخفيض تكاليف'],
-    keywords_fr: ['aide financière', 'aide médicaments', 'réduction']
-  },
-  {
-    key: 'soutien',
-    emoji: '🧠',
-    ar: 'دعم نفسي',
-    fr: 'Soutien psy.',
-    keywords_ar: ['دعم نفسي', 'متابعة نفسية', 'مرافقة نفسية', 'دعم نفسي واجتماعي'],
-    keywords_fr: ['soutien psychologique', 'suivi psychologique', 'accompagnement psychologique']
-  },
-  {
-    key: 'transport',
-    emoji: '🚗',
-    ar: 'نقل',
-    fr: 'Transport',
-    keywords_ar: ['نقل'],
-    keywords_fr: ['transport']
-  },
-  {
-    key: 'sensib',
-    emoji: '📢',
-    ar: 'توعية',
-    fr: 'Sensibilisation',
-    keywords_ar: ['توعية', 'حملات الكشف', 'قوافل'],
-    keywords_fr: ['sensibilisation', 'dépistage', 'caravane']
-  }
-];
-
-function detectBadges(assoc) {
-  const textAr = (assoc.aide_ar || '').toLowerCase();
-  const textFr = (assoc.aide_fr || '').toLowerCase();
-  return BADGE_RULES.filter(rule =>
-    rule.keywords_ar.some(k => textAr.includes(k)) ||
-    rule.keywords_fr.some(k => textFr.includes(k))
-  );
-}
 
 /* ── INIT ──────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
@@ -98,21 +45,21 @@ function applyLang(lang) {
   const filterLabel = document.querySelector('.filter-label');
   if (filterLabel) filterLabel.textContent = lang === 'ar' ? 'المدينة:' : 'Ville :';
 
-  // Contribution section
-  const contribTitle = document.getElementById('contrib-title');
-  const contribText  = document.getElementById('contrib-text');
-  const btnModif     = document.getElementById('btn-modif');
-  const btnAjout     = document.getElementById('btn-ajout');
-  const contribMail  = document.getElementById('contrib-mail');
-  if (contribTitle) contribTitle.textContent = lang === 'ar' ? 'معلومة غير صحيحة؟' : 'Une information incorrecte ?';
-  if (contribText)  contribText.textContent  = lang === 'ar'
-    ? 'ساعدنا في الحفاظ على دليل موثوق لفائدة المرضى.'
-    : 'Aidez-nous à maintenir un annuaire fiable pour les patients.';
-  if (btnModif) btnModif.innerHTML = lang === 'ar' ? '📩&nbsp; الإبلاغ عن خطأ' : '📩&nbsp; Signaler une modification';
-  if (btnAjout) btnAjout.innerHTML = lang === 'ar' ? '➕&nbsp; اقتراح جمعية جديدة' : '➕&nbsp; Ajouter une association';
-  if (contribMail) contribMail.innerHTML = lang === 'ar'
-    ? 'أو تواصل معنا : <a href="mailto:hikmawamaana@gmail.com">hikmawamaana@gmail.com</a>'
-    : 'Ou contactez-nous : <a href="mailto:hikmawamaana@gmail.com">hikmawamaana@gmail.com</a>';
+  // Contact section translations
+  const els = {
+    title:      document.getElementById('contact-title'),
+    desc:       document.getElementById('contact-desc'),
+    modifLabel: document.getElementById('btn-modif-label'),
+    ajoutLabel: document.getElementById('btn-ajout-label'),
+    emailLabel: document.getElementById('contact-email-label'),
+  };
+  if (els.title)      els.title.textContent      = lang === 'ar' ? 'تواصل معنا'              : 'Contactez-nous';
+  if (els.desc)       els.desc.textContent       = lang === 'ar'
+    ? 'إذا لاحظتم خطأ في المعلومات أو ترغبون في إضافة جمعية جديدة، يمكنكم التواصل معنا عبر النموذج التالي.'
+    : 'Si vous constatez une erreur ou souhaitez ajouter une association, contactez-nous via le formulaire.';
+  if (els.modifLabel) els.modifLabel.textContent = lang === 'ar' ? 'الإبلاغ عن خطأ'          : 'Signaler une erreur';
+  if (els.ajoutLabel) els.ajoutLabel.textContent = lang === 'ar' ? 'اقتراح جمعية جديدة'      : 'Ajouter une association';
+  if (els.emailLabel) els.emailLabel.textContent = lang === 'ar' ? 'أو راسلونا مباشرة'       : 'Ou écrivez-nous directement';
 
   filterAssocs();
 }
@@ -186,11 +133,6 @@ function buildCard(a) {
   const addr  = lang === 'ar' ? a.adresse_ar: a.adresse_fr;
   const dateLabel = lang === 'ar' ? UPDATE_DATE_AR : UPDATE_DATE_FR;
 
-  /* ── Badges ── */
-  const badges = detectBadges(a);
-  const badgesHTML = badges.map(b =>
-    `<span class="badge badge--${b.key}">${b.emoji} ${lang === 'ar' ? b.ar : b.fr}</span>`
-  ).join('');
 
   /* ── Téléphone ── */
   let telHTML = '';
@@ -214,10 +156,7 @@ function buildCard(a) {
       <div class="card-ville-tag">${escHtml(ville)}</div>
     </div>
     <div class="card-body">
-      <div class="card-aide-section">
-        <div class="card-badges">${badgesHTML}</div>
-        <div class="card-aide">${escHtml(aide)}...</div>
-      </div>
+      <div class="card-aide">${escHtml(aide)}...</div>
       <div class="card-contact">
         ${telHTML}
         <div class="contact-item">

@@ -54,7 +54,7 @@
       >
     </div>
     <div class="filter-row">
-      <label class="filter-label" data-ar="المدينة:" data-fr="Ville :">المدينة:</label>
+      <label class="filter-label" for="villeFilter">المدينة:</label>
       <select id="villeFilter" class="ville-select" onchange="filterAssocs()">
         <option value="" data-ar="كل المدن" data-fr="Toutes les villes">كل المدن</option>
       </select>
@@ -74,20 +74,83 @@
     <div class="empty-icon">🔎</div>
     <p data-ar="لا توجد نتائج لهذا البحث" data-fr="Aucun résultat pour cette recherche">لا توجد نتائج لهذا البحث</p>
   </div>
-<!-- CONTRIBUTION -->
+
+  <!-- ══ CONTRIBUTE SECTION ══════════════════════════════════ -->
   <section class="contrib-section">
     <div class="contrib-card">
       <div class="contrib-icon">🤝</div>
       <h2 class="contrib-title" id="contrib-title">معلومة غير صحيحة؟</h2>
       <p class="contrib-text" id="contrib-text">ساعدنا في الحفاظ على دليل موثوق لفائدة المرضى.</p>
       <div class="contrib-btns">
-        <a id="btn-modif" href="https://forms.gle/QYHYgmKE584QrmQN8" target="_blank" rel="noopener noreferrer" class="contrib-btn contrib-btn--primary">📩&nbsp; الإبلاغ عن خطأ</a>
-        <a id="btn-ajout" href="https://forms.gle/pceydxH5MqLaSTBH9" target="_blank" rel="noopener noreferrer" class="contrib-btn contrib-btn--secondary">➕&nbsp; اقتراح جمعية جديدة</a>
+        <a
+          id="btn-modif"
+          href="https://forms.gle/QYHYgmKE584QrmQN8"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contrib-btn contrib-btn--primary"
+        >📩&nbsp; الإبلاغ عن خطأ</a>
+        <a
+          id="btn-ajout"
+          href="https://forms.gle/pceydxH5MqLaSTBH9"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contrib-btn contrib-btn--secondary"
+        >➕&nbsp; اقتراح جمعية جديدة</a>
       </div>
-      <p class="contrib-mail" id="contrib-mail">أو تواصل معنا : <a href="mailto:hikmawamaana@gmail.com">hikmawamaana@gmail.com</a></p>
+      <p class="contrib-mail" id="contrib-mail">
+        أو تواصل معنا عبر البريد الإلكتروني :
+        <a href="mailto:hikmawamaana@gmail.com">hikmawamaana@gmail.com</a>
+      </p>
     </div>
   </section>
-  <!-- DISCLAIMER -->
+  <!-- ══════════════════════════════════════════════════════ -->
+
+  <!-- ══ تواصل معنا ════════════════════════════════ -->
+  <section class="contact-section" id="contact">
+    <div class="contact-inner">
+      <div class="contact-card">
+        <div class="contact-icon-wrap">
+          <span class="contact-main-icon">✉️</span>
+        </div>
+        <h2 class="contact-title" id="contact-title">تواصل معنا</h2>
+        <p class="contact-desc" id="contact-desc">
+          إذا لاحظتم خطأ في المعلومات أو ترغبون في إضافة جمعية جديدة،
+          يمكنكم التواصل معنا عبر النموذج التالي.
+        </p>
+        <div class="contact-actions">
+          <a
+            id="btn-modif"
+            href="https://forms.gle/QYHYgmKE584QrmQN8"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-btn contact-btn--report"
+          >
+            <span class="contact-btn-icon">📩</span>
+            <span id="btn-modif-label">الإبلاغ عن خطأ</span>
+          </a>
+          <a
+            id="btn-ajout"
+            href="https://forms.gle/pceydxH5MqLaSTBH9"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact-btn contact-btn--add"
+          >
+            <span class="contact-btn-icon">➕</span>
+            <span id="btn-ajout-label">اقتراح جمعية جديدة</span>
+          </a>
+        </div>
+        <div class="contact-email-row">
+          <span class="contact-email-label" id="contact-email-label">أو راسلونا مباشرة</span>
+          <a href="mailto:hikmawamaana@gmail.com" class="contact-email-link" dir="ltr">
+            hikmawamaana@gmail.com
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ══════════════════════════════════════════════ -->
+
+  <!-- FOOTER -->
   <footer class="footer">
     <p class="disclaimer" data-ar="المعلومات المقدمة إرشادية فقط ويجب التحقق منها مباشرة مع الجمعيات." data-fr="Les informations sont fournies à titre indicatif et doivent être vérifiées auprès des établissements.">
       المعلومات المقدمة إرشادية فقط ويجب التحقق منها مباشرة مع الجمعيات.
