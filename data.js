@@ -5,7 +5,7 @@ const ASSOCIATIONS = [
     nom_fr: "Maison de Vie Casablanca Adultes",
     ville_ar: "الدار البيضاء",
     ville_fr: "Casablanca",
-    aide_ar: "إيواء، تغذية، دعم نفسي واجتماعي",
+    aide_ar: "...إيواء، تغذية، دعم نفسي واجتماعي",
     aide_fr: "Hébergement, restauration, soutien psychologique et social...",
     adresse_ar: "59 شارع الناظور، الدار البيضاء",
     adresse_fr: "59 Avenue de Nador, Casablanca",
